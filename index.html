@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Estimador transparente de probabilidades para eventos binários." />
+    <title>Estimador de previsões</title>
+    <link rel="stylesheet" href="forecast.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="header">
+        <p class="eyebrow">FERRAMENTA DE ANÁLISE</p>
+        <h1>Estimador de previsões</h1>
+        <p class="intro">Combine probabilidade de mercado, taxa-base e sinais para estimar um evento binário.</p>
+      </header>
+
+      <div class="layout">
+        <form class="panel form-panel" id="forecastForm">
+          <label class="field">
+            <span>Evento</span>
+            <input id="eventName" type="text" maxlength="120" placeholder="Ex.: O evento acontece até sexta?" />
+          </label>
+
+          <div class="field-row">
+            <label class="field">
+              <span>Probabilidade do mercado (%)</span>
+              <input id="marketProbability" type="number" min="0" max="100" step="0.1" value="54" required />
+            </label>
+            <label class="field">
+              <span>Taxa-base histórica (%)</span>
+              <input id="priorProbability" type="number" min="0" max="100" step="0.1" value="50" required />
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Peso do mercado: <output id="marketWeightOutput">70%</output></span>
+            <input id="marketWeight" type="range" min="0" max="100" step="1" value="70" />
+            <small>O restante do peso será atribuído à taxa-base.</small>
+          </label>
+
+          <div class="signals-heading">
+            <div>
+              <h2>Sinais adicionais</h2>
+              <p>Adicione previsões independentes de modelos ou indicadores.</p>
+            </div>
+            <button class="secondary-button" id="addSignal" type="button">+ Sinal</button>
+          </div>
+          <div id="signals" class="signals"></div>
+          <p class="hint">A confiabilidade e o tamanho da amostra reduzem o impacto de sinais frágeis. Dados mais antigos perdem influência.</p>
+
+          <button class="primary-button" type="submit">Calcular estimativa</button>
+          <p class="error" id="error" role="alert" hidden></p>
+        </form>
+
+        <section class="panel result-panel" aria-live="polite">
+          <p class="eyebrow">ESTIMATIVA DO MODELO</p>
+          <h2 id="resultEvent">Seu evento</h2>
+          <div class="probability" id="predictedProbability">—</div>
+          <div class="bar" aria-label="Probabilidade estimada">
+            <div class="bar-fill" id="probabilityBar"></div>
+          </div>
+          <div class="comparison">
+            <span>Mercado <strong id="marketResult">—</strong></span>
+            <span>Diferença <strong id="edgeResult">—</strong></span>
+          </div>
+          <div class="baseline">
+            <span>Estimativa antes dos sinais</span>
+            <strong id="baselineResult">—</strong>
+          </div>
+          <div class="evidence">
+            <h3>Ajuste dos sinais em log-odds</h3>
+            <div id="evidenceList" class="evidence-list">
+              <p class="empty">Adicione sinais e calcule para ver a contribuição de cada um.</p>
+            </div>
+          </div>
+          <p class="disclaimer">Estimativa informativa, não garantia de resultado nem recomendação de negociação. A qualidade depende dos dados informados.</p>
+        </section>
+      </div>
+    </main>
+    <script src="forecast.js"></script>
+    <script src="forecast-app.js"></script>
+  </body>
+</html>
